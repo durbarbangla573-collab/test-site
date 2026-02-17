@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,8 +12,13 @@
   <div class="top-bar">🎉 Eid Sale Ongoing | Free Delivery Above ৳2000</div>
 
   <header class="header">
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    <h2 class="logo">My Store</h2>
+    <div class="header-left">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <h2 class="logo">My Store</h2>
+    </div>
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search products..." onkeyup="searchProducts()">
+    </div>
   </header>
 
   <div id="menu-overlay" class="menu-overlay" onclick="toggleMenu()"></div>
@@ -43,6 +49,7 @@
     </aside>
 
     <main class="products">
+      <p id="no-results" class="hidden">No products found.</p>
       <div id="product-list" class="product-grid"></div>
     </main>
   </div>
@@ -61,15 +68,18 @@
         <h2 id="modal-name"></h2>
         <p id="modal-price"></p>
         <p id="modal-description"></p>
-        <button id="buy-now">Buy Now (WhatsApp)</button>
+        <button id="buy-now">🛒 Buy Now via WhatsApp</button>
       </div>
     </div>
   </div>
 
   <footer class="footer">
-    <a href="https://wa.me/8801972854293" target="_blank"><img src="icons/whatsapp.png" alt="WA"></a>
-    <a href="https://www.facebook.com/profile.php?id=61588186292144" target="_blank"><img src="icons/facebook.png" alt="FB"></a>
-    <a href="https://www.instagram.com/porimoni.official/" target="_blank"><img src="icons/instagram.png" alt="IG"></a>
+    <div class="social-icons">
+      <a href="https://wa.me/8801972854293" target="_blank"><img src="icons/whatsapp.png" alt="WA"></a>
+      <a href="https://www.facebook.com/profile.php?id=61588186292144" target="_blank"><img src="icons/facebook.png" alt="FB"></a>
+      <a href="https://www.instagram.com/porimoni.official/" target="_blank"><img src="icons/instagram.png" alt="IG"></a>
+    </div>
+    <p class="copyright">&copy; 2024 My Store. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
