@@ -312,21 +312,21 @@ onclick="openModal(
 
 <!-- SOCIAL BUTTONS -->
 <div class="social-bar">
-  <img src="whatsapp.png" onclick="window.open('https://wa.me/8801972854293')">
-  <img src="facebook.png" onclick="window.open('https://www.facebook.com/profile.php?id=61588186292144')">
-  <img src="instagram.png" onclick="window.open('https://www.instagram.com/porimoni.official/')">
+  <img src="icons/whatsapp.png" onclick="window.open('https://wa.me/8801972854293')">
+  <img src="icons/facebook.png" onclick="window.open('https://www.facebook.com/profile.php?id=61588186292144')">
+  <img src="icons/instagram.png" onclick="window.open('https://www.instagram.com/porimoni.official/')">
 </div>
 
 <script>
-let currentSlide=0;
-let slideImages=[];
-
+/* ---------------- MENU ---------------- */
 function toggleMenu(){
   document.getElementById("sideMenu").classList.toggle("active");
 }
 
+/* ---------------- CATEGORY FILTER ---------------- */
 function filterCategory(category){
   let products=document.querySelectorAll(".product");
+
   products.forEach(p=>{
     if(category==="all" || p.classList.contains(category)){
       p.style.display="block";
@@ -334,14 +334,19 @@ function filterCategory(category){
       p.style.display="none";
     }
   });
+
+  toggleMenu(); // close menu after click (mobile friendly)
 }
 
-/* OPEN MODAL WITH MULTIPLE IMAGES */
+/* ---------------- SLIDER ---------------- */
+let currentSlide=0;
+let slideImages=[];
+let slider=document.getElementById("slider");
+
 function openModal(images, whatsappLink){
   currentSlide=0;
   slideImages=images;
 
-  let slider=document.getElementById("slider");
   slider.innerHTML="";
 
   images.forEach(img=>{
@@ -350,6 +355,7 @@ function openModal(images, whatsappLink){
 
   document.getElementById("productModal").style.display="flex";
   document.getElementById("modalBuyBtn").href=whatsappLink;
+
   updateSlide();
 }
 
@@ -358,37 +364,38 @@ function closeModal(){
 }
 
 function updateSlide(){
-  document.getElementById("slider").style.transform=
-    `translateX(-${currentSlide*100}%)`;
+  slider.style.transform=`translateX(-${currentSlide*100}%)`;
 }
 
 function nextSlide(){
-  if(currentSlide<slideImages.length-1){
+  if(currentSlide < slideImages.length-1){
     currentSlide++;
     updateSlide();
   }
 }
 
 function prevSlide(){
-  if(currentSlide>0){
+  if(currentSlide > 0){
     currentSlide--;
     updateSlide();
   }
 }
 
-/* TOUCH SWIPE SUPPORT */
+/* ---------------- TOUCH SWIPE ---------------- */
 let startX=0;
 
-document.getElementById("slider").addEventListener("touchstart",e=>{
+slider.addEventListener("touchstart",e=>{
   startX=e.touches[0].clientX;
 });
 
-document.getElementById("slider").addEventListener("touchend",e=>{
+slider.addEventListener("touchend",e=>{
   let endX=e.changedTouches[0].clientX;
+
   if(startX-endX>50) nextSlide();
   if(endX-startX>50) prevSlide();
 });
 </script>
+
 
 
 </body>
