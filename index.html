@@ -1,410 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Premium Store</title>
-
-<style>
-  /* SLIDER */
-.slider-container{
-  position:relative;
-  overflow:hidden;
-}
-
-.slider{
-  display:flex;
-  transition:transform 0.4s ease;
-}
-
-.slider img{
-  width:100%;
-  height:350px;
-  object-fit:cover;
-  flex-shrink:0;
-}
-
-.nav{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:24px;
-  background:rgba(0,0,0,0.5);
-  color:#fff;
-  padding:5px 10px;
-  cursor:pointer;
-  border-radius:50%;
-}
-
-.prev{ left:10px; }
-.next{ right:10px; }
-
-body{
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#f5f6fa;
-}
-
-/* TOP OFFER BAR */
-.top-bar{
-  background:#000;
-  color:#fff;
-  text-align:center;
-  padding:6px;
-  font-size:14px;
-}
-
-/* HEADER */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px;
-  background:#fff;
-  box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-.menu-btn{
-  font-size:22px;
-  cursor:pointer;
-}
-
-.logo{
-  font-weight:bold;
-  font-size:20px;
-}
-
-/* COVER */
-.cover img{
-  width:100%;
-  height:300px;
-  object-fit:cover;
-}
-
-/* SIDE MENU */
-/* SIDE MENU */
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:250px;
-  height:100%;
-  background:#ffffff;
-  box-shadow:2px 0 15px rgba(0,0,0,0.15);
-  padding:25px 20px;
-  transition:0.3s ease;
-  z-index:1000;
-  overflow-y:auto;
-}
-
-.side-menu.active{
-  left:0;
-}
-
-.side-menu a{
-  display:block;
-  padding:12px 0;
-  text-decoration:none;
-  color:#333;
-  font-weight:500;
-  border-bottom:1px solid #eee;
-}
-
-.side-menu a:hover{
-  color:#e60023;
-}
-
-
-/* PRODUCT GRID */
-.products{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:20px;
-  padding:20px;
-}
-
-.product{
-  background:#fff;
-  border-radius:12px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.05);
-  overflow:hidden;
-  transition:0.3s;
-}
-
-.product:hover{
-  transform:translateY(-5px);
-}
-
-.product img{
-  width:100%;
-  height:250px;
-  object-fit:cover;
-}
-
-.product-info{
-  padding:15px;
-}
-
-.product-title{
-  font-weight:600;
-  margin-bottom:8px;
-}
-
-.price{
-  color:#e60023;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-/* PREMIUM BUY BUTTON */
-.buy-btn{
-  display:inline-block;
-  padding:8px 15px;
-  background:#000;
-  color:#fff;
-  border-radius:20px;
-  text-decoration:none;
-  font-size:14px;
-  transition:0.3s;
-}
-
-.buy-btn:hover{
-  background:#e60023;
-}
-
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
-}
-
-.modal-content{
-  background:#fff;
-  width:90%;
-  max-width:400px;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.modal img{
-  width:100%;
-  height:300px;
-  object-fit:cover;
-}
-
-.close{
-  text-align:right;
-  padding:10px;
-  cursor:pointer;
-}
-
-/* FOOTER SOCIAL */
-.social-bar{
-  position:fixed;
-  bottom:10px;
-  right:10px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.social-bar img{
-  width:40px;
-  height:40px;
-  cursor:pointer;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-  .products{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .cover img{
-    height:200px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="top-bar">🔥 Eid Sale is Live - 20% OFF 🔥</div>
-
-<header>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-  <div class="logo">My Store</div>
-</header>
-
-<div class="side-menu" id="sideMenu">
-  <a href="#" onclick="filterCategory('all')">All</a>
-  <a href="#" onclick="filterCategory('category1')">Category 1</a>
-  <a href="#" onclick="filterCategory('category2')">Category 2</a>
-  <a href="#" onclick="filterCategory('category3')">Category 3</a>
-  <a href="#" onclick="filterCategory('category4')">Category 4</a>
-</div>
-
-<div class="cover">
-  <img src="cover.png">
-</div>
-
-<div class="products">
-
-  <div class="product category1"
-onclick="openModal(
-['images/product1.jpg',
- 'images/product1-2.jpg',
- 'images/product1-3.jpg'],
-'https://wa.me/8801972854293?text=I want Premium Panjabi'
-)">
-  <img src="images/product1.jpg">
-
-  <div class="product-info">
-    <div class="product-title">Premium Panjabi</div>
-    <div class="price">৳1500</div>
-
-    <a class="buy-btn"
-       href="https://wa.me/8801972854293?text=I want Premium Panjabi"
-       target="_blank">
-       BUY NOW
-    </a>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    🎉 Eid Sale Ongoing | Free Delivery Above ৳2000
   </div>
-</div>
 
+  <!-- HEADER -->
+  <header class="header">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <h2>My Store</h2>
+  </header>
 
-  <div class="product category1"
-onclick="openModal(
-['images/product2.jpg',
- 'images/product2-2.jpg',
- 'images/product2-3.jpg'],
-'https://wa.me/8801972854293?text=I want Premium Panjabi'
-)">
-  <img src="images/product1.jpg">
+  <!-- SLIDE MENU -->
+  <nav id="mobile-menu" class="mobile-menu">
+    <span class="close-menu" onclick="toggleMenu()">✕</span>
+    <ul>
+      <li onclick="filterCategory('all')">All</li>
+      <li onclick="filterCategory('category1')">Category 1</li>
+      <li onclick="filterCategory('category2')">Category 2</li>
+      <li onclick="filterCategory('category3')">Category 3</li>
+      <li onclick="filterCategory('category4')">Category 4</li>
+    </ul>
+  </nav>
 
-  <div class="product-info">
-    <div class="product-title">Premium Panjabi</div>
-    <div class="price">৳1500</div>
+  <!-- COVER -->
+  <section class="hero">
+    <img src="cover.jpg" alt="Cover">
+  </section>
 
-    <a class="buy-btn"
-       href="https://wa.me/8801972854293?text=I want Premium Panjabi"
-       target="_blank">
-       BUY NOW
-    </a>
+  <!-- DESKTOP LAYOUT -->
+  <div class="container">
+
+    <aside class="sidebar">
+      <h3>Categories</h3>
+      <ul>
+        <li onclick="filterCategory('all')">All</li>
+        <li onclick="filterCategory('category1')">Category 1</li>
+        <li onclick="filterCategory('category2')">Category 2</li>
+        <li onclick="filterCategory('category3')">Category 3</li>
+        <li onclick="filterCategory('category4')">Category 4</li>
+      </ul>
+    </aside>
+
+    <section class="products">
+      <div id="product-list" class="product-grid"></div>
+    </section>
+
   </div>
-</div>
 
-<!-- MODAL WITH SLIDER -->
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    
-    <div class="close" onclick="closeModal()">✖</div>
-
-    <div class="slider-container">
-      <div class="slider" id="slider"></div>
-
-      <div class="nav prev" onclick="prevSlide()">❮</div>
-      <div class="nav next" onclick="nextSlide()">❯</div>
+  <!-- PRODUCT MODAL -->
+  <div id="product-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="close-btn">&times;</span>
+      <img id="modal-image">
+      <h2 id="modal-name"></h2>
+      <p id="modal-price"></p>
+      <p id="modal-description"></p>
+      <button id="buy-now">Buy Now</button>
     </div>
-
-    <div style="padding:15px; text-align:center;">
-      <a id="modalBuyBtn" class="buy-btn" target="_blank">BUY NOW</a>
-    </div>
-
   </div>
-</div>
 
+  <!-- FOOTER SOCIAL -->
+  <footer class="footer">
+    <a href="https://wa.me/8801XXXXXXXXX" target="_blank">
+      <img src="icons/whatsapp.png">
+    </a>
+    <a href="https://facebook.com/YOURPAGE" target="_blank">
+      <img src="icons/facebook.png">
+    </a>
+    <a href="https://instagram.com/YOURPAGE" target="_blank">
+      <img src="icons/instagram.png">
+    </a>
+  </footer>
 
-<!-- SOCIAL BUTTONS -->
-<div class="social-bar">
-  <img src="icons/whatsapp.png" onclick="window.open('https://wa.me/8801972854293')">
-  <img src="icons/facebook.png" onclick="window.open('https://www.facebook.com/profile.php?id=61588186292144')">
-  <img src="icons/instagram.png" onclick="window.open('https://www.instagram.com/porimoni.official/')">
-</div>
-
-<script>
-/* ---------------- MENU ---------------- */
-function toggleMenu(){
-  document.getElementById("sideMenu").classList.toggle("active");
-}
-
-/* ---------------- CATEGORY FILTER ---------------- */
-function filterCategory(category){
-  let products=document.querySelectorAll(".product");
-
-  products.forEach(p=>{
-    if(category==="all" || p.classList.contains(category)){
-      p.style.display="block";
-    }else{
-      p.style.display="none";
-    }
-  });
-
-  toggleMenu(); // close menu after click (mobile friendly)
-}
-
-/* ---------------- SLIDER ---------------- */
-let currentSlide=0;
-let slideImages=[];
-let slider=document.getElementById("slider");
-
-function openModal(images, whatsappLink){
-  currentSlide=0;
-  slideImages=images;
-
-  slider.innerHTML="";
-
-  images.forEach(img=>{
-    slider.innerHTML+=`<img src="${img}">`;
-  });
-
-  document.getElementById("productModal").style.display="flex";
-  document.getElementById("modalBuyBtn").href=whatsappLink;
-
-  updateSlide();
-}
-
-function closeModal(){
-  document.getElementById("productModal").style.display="none";
-}
-
-function updateSlide(){
-  slider.style.transform=`translateX(-${currentSlide*100}%)`;
-}
-
-function nextSlide(){
-  if(currentSlide < slideImages.length-1){
-    currentSlide++;
-    updateSlide();
-  }
-}
-
-function prevSlide(){
-  if(currentSlide > 0){
-    currentSlide--;
-    updateSlide();
-  }
-}
-
-/* ---------------- TOUCH SWIPE ---------------- */
-let startX=0;
-
-slider.addEventListener("touchstart",e=>{
-  startX=e.touches[0].clientX;
-});
-
-slider.addEventListener("touchend",e=>{
-  let endX=e.changedTouches[0].clientX;
-
-  if(startX-endX>50) nextSlide();
-  if(endX-startX>50) prevSlide();
-});
-</script>
-
-
-
+  <script src="script.js"></script>
 </body>
 </html>
