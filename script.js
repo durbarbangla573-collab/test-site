@@ -1,97 +1,132 @@
+// PRODUCT DATA
 const products = [
   { 
     name: "Product 1", 
-    price: 500, 
+    price: 1500, 
     category: "category1", 
-    // Array of images for the slider
     images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
     description: "Premium quality product with multiple views." 
   },
   { 
     name: "Product 2", 
-    price: 550, 
-    category: "category1", 
-    images: ["images/product2.jpg", "images/product2-2.jpg", "images/product2-3.jpg"], 
+    price: 2000, 
+    category: "category2", 
+    images: ["images/product2.jpg", "images/product2-2.jpg"], 
     description: "Our best-selling item, now back in stock." 
   },
   { 
     name: "Product 3", 
-    price: 250, 
-    category: "category2", 
-    // Array of images for the slider
-    images: ["images/product3.jpg", "images/product3-2.jpg", "images/product3-3.jpg"], 
-    description: "Premium quality product with multiple views." 
-  },
-  { 
-    name: "Product 4", 
-    price: 250, 
-    category: "category2", 
-    // Array of images for the slider
-    images: ["images/product4.jpg", "images/product4-2.jpg", "images/product4-3.jpg"], 
-    description: "Premium quality product with multiple views." 
+    price: 1200, 
+    category: "category1", 
+    images: ["images/product3.jpg"], // Example of a product with only 1 image
+    description: "Classic everyday item." 
   }
 ];
 
-let currentImageIndex = 0;
-let currentProductImages = [];
+let currentImages = [];
+let currentIndex = 0;
 
-const productList = document.getElementById("product-list");
+// DOM ELEMENTS
 const modal = document.getElementById("product-modal");
-const modalImage = document.getElementById("modal-image");
-const modalName = document.getElementById("modal-name");
-const modalPrice = document.getElementById("modal-price");
-const modalDescription = document.getElementById("modal-description");
+const modalImg = document.getElementById("modal-image");
+const productGrid = document.getElementById("product-list");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
+const menuOverlay = document.getElementById("menu-overlay");
+const mobileMenu = document.getElementById("mobile-menu");
 
-function displayProducts(list) {
-  productList.innerHTML = "";
-  list.forEach(product => {
+// LOAD PRODUCTS
+function displayProducts(items) {
+  productGrid.innerHTML = "";
+  items.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
-      <img src="${product.images[0]}" loading="lazy">
-      <h3>${product.name}</h3>
-      <p>৳${product.price}</p>
+      <img src="${p.images[0]}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>৳${p.price}</p>
     `;
-    card.onclick = () => openModal(product);
-    productList.appendChild(card);
+    card.onclick = () => openModal(p);
+    productGrid.appendChild(card);
   });
 }
 
-function openModal(product) {
-  currentProductImages = product.images;
-  currentImageIndex = 0;
+// OPEN MODAL
+function openModal(p) {
+  currentImages = p.images;
+  currentIndex = 0;
+  updateSlider();
   
-  updateModalImage();
-  modalName.innerText = product.name;
-  modalPrice.innerText = "৳" + product.price;
-  modalDescription.innerText = product.description;
+  document.getElementById("modal-name").innerText = p.name;
+  document.getElementById("modal-price").innerText = "৳" + p.price;
+  document.getElementById("modal-description").innerText = p.description;
   
-  const phoneNumber = "8801972854293";
+  // WhatsApp Link
   document.getElementById("buy-now").onclick = () => {
-    const msg = `Hello, I want to buy ${product.name} (৳${product.price})`;
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+    const url = `https://wa.me/8801972854293?text=${encodeURIComponent('Hello, I want to buy ' + p.name + ' for ৳' + p.price)}`;
+    window.open(url, "_blank");
   };
 
   modal.classList.remove("hidden");
 }
 
-function updateModalImage() {
-  modalImage.src = currentProductImages[currentImageIndex];
-  // Hide arrows if only 1 image exists
-  const arrows = document.querySelectorAll('.nav-arrow');
-  arrows.forEach(a => a.style.display = currentProductImages.length > 1 ? "block" : "none");
+// SLIDER LOGIC
+function updateSlider() {
+  modalImg.src = currentImages[currentIndex];
+  
+  // Hide arrows if there is only 1 image
+  if (currentImages.length > 1) {
+    prevBtn.style.display = "flex";
+    nextBtn.style.display = "flex";
+  } else {
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
+  }
 }
 
-function changeImage(direction) {
-  currentImageIndex += direction;
-  if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
-  if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
-  updateModalImage();
+function changeImage(step) {
+  if (currentImages.length <= 1) return; // Do nothing if 1 image
+  currentIndex += step;
+  if (currentIndex < 0) currentIndex = currentImages.length - 1;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  updateSlider();
 }
 
+// MOBILE TOUCH SWIPE SUPPORT FOR MODAL
+let touchStartX = 0;
+let touchEndX = 0;
+
+modalImg.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+modalImg.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchEndX < touchStartX - 40) changeImage(1);  // Swiped left
+  if (touchEndX > touchStartX + 40) changeImage(-1); // Swiped right
+});
+
+// UI HELPERS (Menu & Filter)
+function filterCategory(cat) {
+  if (cat === 'all') displayProducts(products);
+  else displayProducts(products.filter(p => p.category === cat));
+  
+  // Auto-close menu on mobile after clicking a category
+  if (mobileMenu.classList.contains("active")) {
+    toggleMenu();
+  }
+}
+
+function toggleMenu() {
+  mobileMenu.classList.toggle("active");
+  menuOverlay.classList.toggle("active");
+}
+
+// CLOSING MODAL
 document.getElementById("close-btn").onclick = () => modal.classList.add("hidden");
-window.onclick = (e) => { if (e.target == modal) modal.classList.add("hidden"); };
+window.onclick = (e) => { 
+  if (e.target == modal) modal.classList.add("hidden"); 
+};
 
-function toggleMenu() { document.getElementById("mobile-menu").classList.toggle("active"); }
-
+// INITIALIZE
 displayProducts(products);
