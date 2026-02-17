@@ -1,32 +1,24 @@
 // PRODUCT DATA (Notice the new 'badge' property)
 const products = [
   { 
-    name: "Black Denim", 
-    price: 500, 
+    name: "Product 1", 
+    price: 100, 
     category: "category1", 
     images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
     description: "Premium quality product with multiple views.",
     badge: "Sale" 
   },
   { 
-    name: "Light Wash Denim", 
-    price: 550, 
+    name: "Product 2", 
+    price: 200, 
     category: "category2", 
     images: ["images/product2.jpg", "images/product2-2.jpg"], 
     description: "Our best-selling item, now back in stock.",
     badge: "Hot"
   },
   { 
-    name: "Cotton Polo Navy Blue", 
-    price: 250, 
-    category: "category1", 
-    images: ["images/product3.jpg"], 
-    description: "Classic everyday item.",
-    badge: "New"
-  }
-  { 
-    name: "Cotton Polo Black", 
-    price: 250, 
+    name: "Product 3", 
+    price: 1200, 
     category: "category1", 
     images: ["images/product3.jpg"], 
     description: "Classic everyday item.",
@@ -72,7 +64,7 @@ function displayProducts(items) {
     card.innerHTML = `
       ${badgeHTML}
       <img src="${p.images[0]}" alt="${p.name}">
-      <h2>${p.name}</h2>
+      <h3>${p.name}</h3>
       <p>৳${p.price}</p>
     `;
     card.onclick = () => openModal(p);
