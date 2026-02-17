@@ -38,7 +38,7 @@ body { font-family: 'Poppins', sans-serif; background: #fdfdfd; color: #2c3e50; 
 
 /* PRODUCT GRID */
 .products { flex: 1; }
-#no-results { text-align: center; color: #888; font-size: 16px; margin-top: 50px; }
+#no-results { text-align: center; color: #888; font-size: 16px; margin-top: 40px; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 .product-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #f1f1f1; cursor: pointer; text-align: center; transition: all 0.3s ease; position: relative; }
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.06); border-color: #eaeaea; }
@@ -66,10 +66,10 @@ body { font-family: 'Poppins', sans-serif; background: #fdfdfd; color: #2c3e50; 
 
 .product-details { padding: 25px; text-align: center; overflow-y: auto; }
 #modal-name { font-weight: 600; font-size: 20px; margin-bottom: 5px; }
-#modal-price { font-size: 24px; color: #28a745; font-weight: 700; margin-bottom: 15px; }
+#modal-price { font-size: 24px; color: #0b6171; font-weight: 700; margin-bottom: 15px; }
 #modal-description { color: #666; margin-bottom: 25px; font-size: 14px; line-height: 1.7; }
-#buy-now { background: linear-gradient(135deg, #28a745, #208b38); color: #fff; border: none; width: 100%; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(40,167,69,0.3); }
-#buy-now:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(40,167,69,0.4); }
+#buy-now { background: linear-gradient(135deg, #0b6171, #06bddf); color: #fff; border: none; width: 100%; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(40,167,69,0.3); }
+#buy-now:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(20,147,173,0.4); }
 
 /* FOOTER */
 .footer { text-align: center; padding: 40px 20px; background: #fff; border-top: 1px solid #eaeaea; margin-top: 40px; }
