@@ -38,7 +38,7 @@ body { font-family: 'Poppins', sans-serif; background: #fdfdfd; color: #2c3e50; 
 
 /* PRODUCT GRID */
 .products { flex: 1; }
-#no-results { text-align: center; color: #888; font-size: 16px; margin-top: 40px; }
+#no-results { text-align: center; color: #888; font-size: 16px; margin-top: 50px; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 .product-card { background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #f1f1f1; cursor: pointer; text-align: center; transition: all 0.3s ease; position: relative; }
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.06); border-color: #eaeaea; }
