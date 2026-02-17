@@ -12,7 +12,9 @@ const modalImage = document.getElementById("modal-image");
 const modalName = document.getElementById("modal-name");
 const modalPrice = document.getElementById("modal-price");
 const modalDescription = document.getElementById("modal-description");
+const buyNowBtn = document.getElementById("buy-now");
 
+// Display products on the page
 function displayProducts(list) {
   productList.innerHTML = "";
   list.forEach(product => {
@@ -28,6 +30,7 @@ function displayProducts(list) {
   });
 }
 
+// Filter by category
 function filterCategory(cat) {
   if (cat === "all") {
     displayProducts(products);
@@ -38,16 +41,39 @@ function filterCategory(cat) {
   toggleMenu(false);
 }
 
+// Open modal and set up WhatsApp link
 function openModal(product) {
   modalImage.src = product.image;
   modalName.innerText = product.name;
   modalPrice.innerText = "৳" + product.price;
   modalDescription.innerText = product.description;
+  
+  // WhatsApp Integration
+  const phoneNumber = "8801972854293"; // Your number from index.html
+  const message = `Hello! I would like to buy:
+Product: ${product.name}
+Price: ৳${product.price}
+Link: ${window.location.href}`;
+
+  buyNowBtn.onclick = () => {
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+  };
+
   modal.classList.remove("hidden");
 }
 
+// Close modal logic
 closeBtn.onclick = () => modal.classList.add("hidden");
 
+// Close modal if user clicks the dark background
+window.onclick = (event) => {
+  if (event.target === modal) {
+    modal.classList.add("hidden");
+  }
+};
+
+// Toggle mobile menu
 function toggleMenu(forceClose) {
   const menu = document.getElementById("mobile-menu");
   if (forceClose === false) {
@@ -57,4 +83,5 @@ function toggleMenu(forceClose) {
   }
 }
 
+// Initial load
 displayProducts(products);
