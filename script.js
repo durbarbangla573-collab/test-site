@@ -1,7 +1,7 @@
 // PRODUCT DATA (Notice the new 'badge' property)
 const products = [
   { 
-    name: "Product 1", 
+    name: "P", 
     price: 100, 
     category: "category1", 
     images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
