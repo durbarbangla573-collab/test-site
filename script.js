@@ -1,104 +1,160 @@
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSRaLJXaQ_BV2QhjOsZekYwHk06qItZ_rkmQVgZ2AMGfaFaI2yqUpj0k6E-FO7v0QADlkx2mEMzg0w/pub?output=csv";
+// PRODUCT DATA (Notice the new 'badge' property)
+const products = [
+  { 
+    name: "Black Denim Jeans", 
+    price: 500, 
+    category: "category1", 
+    images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
+    description: "Premium quality product with multiple views.",
+    badge: "Sale" 
+  },
+  { 
+    name: "Light Wash Jeans", 
+    price: 550, 
+    category: "category1", 
+    images: ["images/product2.jpg", "images/product2-2.jpg"], 
+    description: "Our best-selling item, now back in stock.",
+    badge: "Hot"
+  },
+  { 
+    name: "Cotton Polo Navy", 
+    price: 250, 
+    category: "category2", 
+    images: ["images/product3.jpg"], 
+    description: "Classic everyday item.",
+    badge: "New"
+  },
+  { 
+    name: "Cotton Polo Black", 
+    price: 250, 
+    category: "category2", 
+    images: ["images/product4.jpg"], 
+    description: "Classic everyday item.",
+    badge: "New"
+  }
+];
 
-let products = []; 
 let currentImages = [];
 let currentIndex = 0;
 
-const productGrid = document.getElementById("product-list");
+// DOM ELEMENTS
 const modal = document.getElementById("product-modal");
 const modalImg = document.getElementById("modal-image");
+const productGrid = document.getElementById("product-list");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
+const menuOverlay = document.getElementById("menu-overlay");
+const mobileMenu = document.getElementById("mobile-menu");
+const noResultsTxt = document.getElementById("no-results");
 
-// Robust CSV Parser (Handles commas inside quotes)
-function parseCSV(text) {
-    const rows = [];
-    const pattern = /("([^"]|"")*"|[^,]+|(?<=,|^)(?=,|$))/g;
-    const lines = text.split(/\r?\n/);
-
-    lines.forEach((line, index) => {
-        if (index === 0 || !line.trim()) return; // Skip headers/empty
-        const matches = line.match(pattern);
-        if (matches) {
-            rows.push(matches.map(m => m.replace(/^"|"$/g, '').trim()));
-        }
-    });
-    return rows;
-}
-
-async function fetchProducts() {
-    try {
-        const response = await fetch(SHEET_CSV_URL);
-        const data = await response.text();
-        const parsedRows = parseCSV(data);
-        
-        products = parsedRows.map(row => ({
-            name: row[0],
-            price: row[1],
-            category: row[2],
-            // Split by pipe | if multiple images exist
-            images: row[3] ? row[3].split('|').map(img => img.trim()) : ["images/placeholder.jpg"],
-            description: row[4],
-            badge: row[5]
-        })).filter(p => p.name);
-
-        displayProducts(products);
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        productGrid.innerHTML = "<p>Error loading images. Check your Sheet published link.</p>";
-    }
-}
-
+// LOAD PRODUCTS
 function displayProducts(items) {
-    productGrid.innerHTML = "";
-    items.forEach(p => {
-        const card = document.createElement("div");
-        card.className = "product-card";
-        let badgeHTML = p.badge ? `<span class="badge">${p.badge}</span>` : "";
-        
-        card.innerHTML = `
-            ${badgeHTML}
-            <img src="${p.images[0]}" onerror="this.src='https://via.placeholder.com/300?text=Image+Not+Found'">
-            <h3>${p.name}</h3>
-            <p>৳${p.price}</p>
-        `;
-        card.onclick = () => openModal(p);
-        productGrid.appendChild(card);
-    });
-}
+  productGrid.innerHTML = "";
+  
+  if (items.length === 0) {
+    noResultsTxt.classList.remove("hidden");
+    return;
+  } else {
+    noResultsTxt.classList.add("hidden");
+  }
 
-function openModal(p) {
-    currentImages = p.images;
-    currentIndex = 0;
-    updateSlider();
-    document.getElementById("modal-name").innerText = p.name;
-    document.getElementById("modal-price").innerText = "৳" + p.price;
-    document.getElementById("modal-description").innerText = p.description;
+  items.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "product-card";
     
-    document.getElementById("buy-now").onclick = () => {
-        window.open(`https://wa.me/8801972854293?text=I want to buy ${p.name}`, "_blank");
-    };
-    modal.classList.remove("hidden");
+    // Check if the product has a badge
+    let badgeHTML = "";
+    if (p.badge) {
+      let badgeClass = p.badge.toLowerCase() === 'new' ? 'badge new' : 'badge';
+      badgeHTML = `<span class="${badgeClass}">${p.badge}</span>`;
+    }
+
+    card.innerHTML = `
+      ${badgeHTML}
+      <img src="${p.images[0]}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p>৳${p.price}</p>
+    `;
+    card.onclick = () => openModal(p);
+    productGrid.appendChild(card);
+  });
 }
 
+// LIVE SEARCH FUNCTION
+function searchProducts() {
+  const query = document.getElementById("search-input").value.toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+  displayProducts(filtered);
+}
+
+// OPEN MODAL
+function openModal(p) {
+  currentImages = p.images;
+  currentIndex = 0;
+  updateSlider();
+  
+  document.getElementById("modal-name").innerText = p.name;
+  document.getElementById("modal-price").innerText = "৳" + p.price;
+  document.getElementById("modal-description").innerText = p.description;
+  
+  document.getElementById("buy-now").onclick = () => {
+    const url = `https://wa.me/8801707821631?text=${encodeURIComponent('Hello, I want to buy ' + p.name + ' for ৳' + p.price)}`;
+    window.open(url, "_blank");
+  };
+
+  modal.classList.remove("hidden");
+}
+
+// SLIDER LOGIC
 function updateSlider() {
-    modalImg.src = currentImages[currentIndex];
-    const multi = currentImages.length > 1;
-    prevBtn.style.display = nextBtn.style.display = multi ? "flex" : "none";
+  modalImg.src = currentImages[currentIndex];
+  if (currentImages.length > 1) {
+    prevBtn.style.display = "flex";
+    nextBtn.style.display = "flex";
+  } else {
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
+  }
 }
 
 function changeImage(step) {
-    currentIndex = (currentIndex + step + currentImages.length) % currentImages.length;
-    updateSlider();
+  if (currentImages.length <= 1) return;
+  currentIndex += step;
+  if (currentIndex < 0) currentIndex = currentImages.length - 1;
+  if (currentIndex >= currentImages.length) currentIndex = 0;
+  updateSlider();
 }
 
-// UI Controls
+// MOBILE TOUCH SWIPE SUPPORT FOR MODAL
+let touchStartX = 0;
+let touchEndX = 0;
+
+modalImg.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+modalImg.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchEndX < touchStartX - 40) changeImage(1);  
+  if (touchEndX > touchStartX + 40) changeImage(-1); 
+});
+
+// UI HELPERS
+function filterCategory(cat) {
+  document.getElementById("search-input").value = ""; // Clear search when filtering
+  if (cat === 'all') displayProducts(products);
+  else displayProducts(products.filter(p => p.category === cat));
+  
+  if (mobileMenu.classList.contains("active")) toggleMenu();
+}
+
 function toggleMenu() {
-    document.getElementById("mobile-menu").classList.toggle("active");
-    document.getElementById("menu-overlay").classList.toggle("active");
+  mobileMenu.classList.toggle("active");
+  menuOverlay.classList.toggle("active");
 }
 
 document.getElementById("close-btn").onclick = () => modal.classList.add("hidden");
 window.onclick = (e) => { if (e.target == modal) modal.classList.add("hidden"); };
 
-fetchProducts();
+// INITIALIZE
+displayProducts(products);
