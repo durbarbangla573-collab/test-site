@@ -1,38 +1,37 @@
-// PRODUCT DATA (Notice the new 'badge' property)
-const products = [
-  { 
-    name: "Black Denim Jeans", 
-    price: 500, 
-    category: "category1", 
-    images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
-    description: "Premium quality product with multiple views.",
-    badge: "Sale" 
-  },
-  { 
-    name: "Light Wash Jeans", 
-    price: 550, 
-    category: "category1", 
-    images: ["images/product2.jpg", "images/product2-2.jpg"], 
-    description: "Our best-selling item, now back in stock.",
-    badge: "Hot"
-  },
-  { 
-    name: "Cotton Polo Navy", 
-    price: 250, 
-    category: "category2", 
-    images: ["images/product3.jpg"], 
-    description: "Classic everyday item.",
-    badge: "New"
-  },
-  { 
-    name: "Cotton Polo Black", 
-    price: 250, 
-    category: "category2", 
-    images: ["images/product4.jpg"], 
-    description: "Classic everyday item.",
-    badge: "New"
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSRaLJXaQ_BV2QhjOsZekYwHk06qItZ_rkmQVgZ2AMGfaFaI2yqUpj0k6E-FO7v0QADlkx2mEMzg0w/pub?output=csv";
+
+let products = []; // Start with an empty list
+let currentImages = [];
+let currentIndex = 0;
+
+// NEW: Function to get data from Google Sheets
+async function fetchProductsFromSheet() {
+  try {
+    const response = await fetch(SHEET_CSV_URL);
+    const data = await response.text();
+    
+    // Parse CSV to JSON
+    const rows = data.split("\n").slice(1); // Skip header row
+    products = rows.map(row => {
+      const cols = row.split(",");
+      return {
+        name: cols[0],
+        price: cols[1],
+        category: cols[2],
+        // Split image string back into an array
+        images: cols[3] ? cols[3].split("|") : ["images/placeholder.jpg"], 
+        description: cols[4],
+        badge: cols[5]
+      };
+    }).filter(p => p.name); // Remove empty rows
+
+    displayProducts(products); // Show products once loaded
+  } catch (error) {
+    console.error("Error loading sheet:", error);
+    // Fallback if sheet fails
+    productGrid.innerHTML = "<p>Failed to load products. Please try again.</p>";
   }
-];
+}
 
 let currentImages = [];
 let currentIndex = 0;
