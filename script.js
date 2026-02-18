@@ -1,7 +1,7 @@
 // PRODUCT DATA (Notice the new 'badge' property)
 const products = [
   { 
-    name: "Black Denim", 
+    name: "Black Denim Jeans", 
     price: 500, 
     category: "category1", 
     images: ["images/product1.jpg", "images/product1-2.jpg", "images/product1-3.jpg"], 
@@ -9,7 +9,7 @@ const products = [
     badge: "Sale" 
   },
   { 
-    name: "Light Wash Denim", 
+    name: "Light Wash Jeans", 
     price: 550, 
     category: "category1", 
     images: ["images/product2.jpg", "images/product2-2.jpg"], 
@@ -98,7 +98,7 @@ function openModal(p) {
   document.getElementById("modal-description").innerText = p.description;
   
   document.getElementById("buy-now").onclick = () => {
-    const url = `https://wa.me/8801972854293?text=${encodeURIComponent('Hello, I want to buy ' + p.name + ' for ৳' + p.price)}`;
+    const url = `https://wa.me/8801707821631?text=${encodeURIComponent('Hello, I want to buy ' + p.name + ' for ৳' + p.price)}`;
     window.open(url, "_blank");
   };
 
