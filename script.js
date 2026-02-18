@@ -156,4 +156,4 @@ document.getElementById("close-btn").onclick = () => modal.classList.add("hidden
 window.onclick = (e) => { if (e.target == modal) modal.classList.add("hidden"); };
 
 // INITIALIZE
-displayProducts(products);
+fetchProductsFromSheet();
